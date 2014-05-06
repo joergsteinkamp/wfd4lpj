@@ -149,7 +149,7 @@ for v in ['Rainf', 'Tair', 'SWdown']:
   ncout_id    = ncout.createVariable('land_id',  'i', ('land_id',))
   ncout_id[:] = out_index
 
-  ncout_time               = ncout.createVariable('time', 'i8', ('time',))
+  ncout_time               = ncout.createVariable('time', 'i', ('time',))
   ncout_time.standard_name = "time"
   ncout_time.long_name     = "time"
   ncout_time.units         = "days since 1901-01-01 00:00:00"
