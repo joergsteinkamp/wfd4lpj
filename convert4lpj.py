@@ -70,7 +70,10 @@ wfd_z_2d[lpj_soil_2d == 0] = -999.9
 
 # create a new index (count along longitude and from north to south)
 index_2d = np.arange(1, len(out_lat) * len(out_lon) + 1).reshape(len(out_lat), len(out_lon))
-index_2d = np.where(lpj_soil_2d == 0, 0, index_2d)
+index_2d = np.where(lpj_soil_2d == 0, -1, index_2d)
+
+out_index = range( len(index_2d[index_2d != -1]) )
+index_2d[index_2d != -1] = out_index[:]
 
 # create 2D longitude and latitude field
 lon_2d = [out_lon] * len(out_lat)
@@ -103,10 +106,10 @@ ncout_soil                   = ncout.createVariable('soiltype', 'i', ('lat', 'lo
 ncout_soil.long_name         = "LPJ soilcode"
 ncout_soil.units             = "-"
 ncout_soil.missing_value     = 0
-ncout_index_2d               = ncout.createVariable('index', 'i', ('lat', 'lon'), fill_value=0)
+ncout_index_2d               = ncout.createVariable('index', 'i', ('lat', 'lon'), fill_value=-1)
 ncout_index_2d.long_name     = "index of gridcell"
 ncout_index_2d.units         = "-"
-ncout_index_2d.missing_value = 0
+ncout_index_2d.missing_value = -1
 ncout_lat[:]                 = out_lat
 ncout_lon[:]                 = out_lon
 ncout_z[:]                   = wfd_z_2d[:]
@@ -119,10 +122,10 @@ ncout_lon_2d[:] = lon_2d
 ncout_lat_2d[:] = lat_2d
 ncout.close()
 
-out_lon_1d = lon_2d[index_2d != 0]
-out_lat_1d = lat_2d[index_2d != 0]
-out_soil   = lpj_soil_2d[index_2d != 0]
-out_index  = index_2d[index_2d != 0]
+out_lon_1d = lon_2d[index_2d != -1]
+out_lat_1d = lat_2d[index_2d != -1]
+out_soil   = lpj_soil_2d[index_2d != -1]
+out_index  = index_2d[index_2d != -1]
 
 # write the gridlist file for LPJ input
 fout = open(os.path.join(wfd_base_dir, 'LPJ', "gridlist_cf.txt"), 'w')
@@ -224,7 +227,7 @@ for v in ['Rainf', 'Tair', 'SWdown']:
       
       for d in np.arange(clim.shape[0]):
         clim_2d[wfd_lat_id, wfd_lon_id] = clim[d,:]
-        ncout_clim[days,:] = np.array(clim_2d[index_2d != 0], 'f')
+        ncout_clim[days,:] = np.array(clim_2d[index_2d != -1], 'f')
         days += 1
     ncout.sync()
 
@@ -254,7 +257,7 @@ for v in ['Rainf', 'Tair', 'SWdown']:
         clim_2d = clim[d,:,:]
         clim_2d[clim_2d>1.e19] = -999.9
         clim_2d = np.flipud(clim_2d)
-        clim_out = np.array(clim_2d[index_2d != 0], 'f')
+        clim_out = np.array(clim_2d[index_2d != -1], 'f')
         ncout_clim[days,:] = clim_out
         days += 1
     ncout.sync()
