@@ -90,11 +90,11 @@ ncout_dim_lon = ncout.createDimension('lon', len(out_lon))
 ncout_lat                    = ncout.createVariable('lat',  'f4', ('lat'))
 ncout_lat.standard_name      = "latitude" 
 ncout_lat.long_name          = "latitude"
-ncout_lat.units              = "degrees_east"
+ncout_lat.units              = "degrees_north"
 ncout_lon                    = ncout.createVariable('lon', 'f4', ('lon'))
 ncout_lon.standard_name      = "longitude" 
 ncout_lon.long_name          = "longitude"
-ncout_lon.units              = "degrees_north"
+ncout_lon.units              = "degrees_east"
 ncout_z                      = ncout.createVariable('altitude', 'f4', ('lat', 'lon'), fill_value=-999.9)
 ncout_z.long_name            = "altitude"
 ncout_z.units                = "m"
@@ -156,13 +156,13 @@ for v in ['Rainf', 'Tair', 'SWdown']:
   ncout_time.calendar      = "365_day"
 
   ncout_lon                = ncout.createVariable('lon', 'f', ('land_id',))
-  ncout_lon.standard_name  = "grid_longitude" 
+  ncout_lon.standard_name  = "longitude" 
   ncout_lon.long_name      = "longitude"
-  ncout_lon.units          = "degrees_north"
+  ncout_lon.units          = "degrees_east"
   ncout_lat                = ncout.createVariable('lat', 'f', ('land_id',))
-  ncout_lat.standard_name  = "grid_latitude" 
+  ncout_lat.standard_name  = "latitude" 
   ncout_lat.long_name      = "latitude"
-  ncout_lat.units          = "degrees_east"
+  ncout_lat.units          = "degrees_north"
   ncout_soil               = ncout.createVariable('soil', 'f', ('land_id',))
   ncout_soil.long_name     = "LPJ soilcode"
   ncout_soil.units         = "-"
