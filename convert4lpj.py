@@ -130,6 +130,11 @@ for i in range(len(out_index)):
   fout.write("%7.2f %7.2f\n" % (out_lon_1d[i], out_lat_1d[i]))
 fout.close()
 
+fout = open(os.path.join(wfd_base_dir, 'LPJ', "landid_cf.txt"), 'w')
+for i in range(len(out_index)):
+  fout.write("%i\n" % (out_index[i]))
+fout.close()
+
 #######################################################
 ### create the NetCDF files for each input valiable
 #######################################################
